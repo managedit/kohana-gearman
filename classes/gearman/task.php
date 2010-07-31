@@ -21,6 +21,8 @@ abstract class Gearman_Task {
 	protected $max_retries = 0;
 	protected $retry_count = 0;
 
+	protected $log;
+
 	public static function factory($class)
 	{
 		return new $class;
@@ -28,7 +30,7 @@ abstract class Gearman_Task {
 	
 	public function __construct()
 	{
-		
+		$this->log = Kohana_Log::instance();
 	}
 
 	public function work($job)
@@ -76,12 +78,22 @@ abstract class Gearman_Task {
 	{
 		$this->job->sendComplete($content);
 
+		$this->log->add(Kohana::INFO, 'GEARMAN: :function_name task completed successfully',
+			array(
+				':function_name' => $this->function_name()
+			));
+
 		return $this;
 	}
 
 	protected function send_warning($content = NULL)
 	{
 		$this->job->sendWarning($content);
+
+		$this->log->add(Kohana::ERROR, 'GEARMAN: :function_name emitted a warning',
+			array(
+				':function_name' => $this->function_name()
+			));
 
 		return $this;
 	}
@@ -90,6 +102,11 @@ abstract class Gearman_Task {
 	{
 		$this->job->sendFail();
 
+		$this->log->add(Kohana::ERROR, 'GEARMAN: :function_name task NOT completed successfully - Failed',
+			array(
+				':function_name' => $this->function_name()
+			));
+
 		return $this;
 	}
 
@@ -97,12 +114,24 @@ abstract class Gearman_Task {
 	{
 		$this->job->sendException($content);
 
+		$this->log->add(Kohana::ERROR, 'GEARMAN: :function_name emitted an exception',
+			array(
+				':function_name' => $this->function_name()
+			));
+
 		return $this;
 	}
 
 	protected function send_status($numerator, $denominator)
 	{
 		$this->job->sendStatus($numerator, $denominator);
+
+		$this->log->add(Kohana::DEBUG, 'GEARMAN: :function_name emitted a status update (:numerator/:denominator)',
+			array(
+				':function_name' => $this->function_name(),
+				':numerator'     => $numerator,
+				':denominator'   => $denominator,
+			));
 
 		return $this;
 	}
@@ -112,6 +141,12 @@ abstract class Gearman_Task {
 	{
 		$this->complete = TRUE;
 		$this->success = TRUE;
+
+		$this->log->add(Kohana::INFO, 'GEARMAN: :function_name task completed successfully',
+			array(
+				':function_name' => $this->function_name()
+			));
+
 		$this->on_success($result);
 	}
 
@@ -123,6 +158,12 @@ abstract class Gearman_Task {
 	public function handle_warning($result)
 	{
 		$this->warning = TRUE;
+
+		$this->log->add(Kohana::ERROR, 'GEARMAN: :function_name emitted a warning',
+			array(
+				':function_name' => $this->function_name()
+			));
+
 		$this->on_warning($result);
 	}
 
@@ -133,6 +174,14 @@ abstract class Gearman_Task {
 
 	public function handle_fail()
 	{
+		$this->complete = TRUE;
+		$this->failed = TRUE;
+
+		$this->log->add(Kohana::ERROR, 'GEARMAN: :function_name task NOT completed successfully - Failed',
+			array(
+				':function_name' => $this->function_name()
+			));
+
 		$this->on_fail();
 	}
 
@@ -144,6 +193,12 @@ abstract class Gearman_Task {
 	public function handle_exception($result)
 	{
 		$this->exception = TRUE;
+
+		$this->log->add(Kohana::ERROR, 'GEARMAN: :function_name emitted an exception',
+			array(
+				':function_name' => $this->function_name()
+			));
+
 		$this->on_exception($result);
 	}
 
@@ -154,6 +209,13 @@ abstract class Gearman_Task {
 
 	public function handle_status($numerator, $denominator)
 	{
+		$this->log->add(Kohana::DEBUG, 'GEARMAN: :function_name emitted a status update (:numerator/:denominator)',
+			array(
+				':function_name' => $this->function_name(),
+				':numerator'     => $numerator,
+				':denominator'   => $denominator,
+			));
+
 		$this->on_status($numerator, $denominator);
 	}
 
@@ -164,6 +226,11 @@ abstract class Gearman_Task {
 
 	public function handle_data($result)
 	{
+		$this->log->add(Kohana::DEBUG, 'GEARMAN: :function_name emitted a data update',
+			array(
+				':function_name' => $this->function_name()
+			));
+
 		$this->on_data($result);
 	}
 

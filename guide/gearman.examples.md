@@ -83,13 +83,13 @@
 			}
 		}
 
-		// Option on_success callback
+		// Optional on_success callback
 		protected function on_success($result)
 		{
 			echo "Task_Reverse::on_success ($result)\n";
 		}
 
-		// Option on_exception callback (libgearman pre 0.13 has a broken implementation of this)
+		// Optional on_exception callback (libgearman pre 0.13 has a broken implementation of this)
 		protected function on_exception($result)
 		{
 			echo "Task_Reverse::on_exception ($result)\n";
@@ -97,27 +97,27 @@
 
 		protected $warning_text = NULL;
 
-		// Option on_warning callback
+		// Optional on_warning callback
 		protected function on_warning($result)
 		{
 			echo "Task_Reverse::on_warning\n";
 			$this->warning_text = $result;
 		}
 
-		// Option on_fail callback
+		// Optional on_fail callback
 		protected function on_fail()
 		{
 			echo "Task_Reverse::on_fail\n";
 			throw new Exception('Work Failed: '.$this->warning_text);
 		}
 
-		// Option on_status callback
+		// Optional on_status callback
 		protected function on_status($numerator, $denominator)
 		{
 			echo "Task_Reverse::on_status ($numerator/$denominator)\n";
 		}
 
-		// Option on_data callback
+		// Optional on_data callback
 		protected function on_data($result)
 		{
 			echo "Task_Reverse::on_data ($result)\n";

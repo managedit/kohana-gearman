@@ -16,11 +16,11 @@ return array(
 		),
 	),
 	'client' => array(
-//		'default' => array(
-//			'driver' => 'pecl',
-//			'servers' => array(
+		'default' => array(
+			'driver' => 'pecl',
+			'servers' => array(
 //				array('127.0.0.1', 4730),
-//			),
-//		),
+			),
+		),
 	),
 );
