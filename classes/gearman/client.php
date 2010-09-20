@@ -47,38 +47,36 @@ abstract class Gearman_Client {
 		$this->config = $config;
 	}
 
-	abstract public function do_task(Gearman_Task $task);
+	abstract public function run_job(Gearman_Job $job, $priority = Gearman::PRIORITY_NORMAL);
 
-	abstract public function do_taskset(Gearman_TaskSet $task);
-
-	protected function handle_success($task, $result)
+	protected function handle_success($job, $result)
 	{
-		$task->handle_success($result);
+		$job->handle_success($result);
 	}
 
-	protected function handle_warning($task, $result)
+	protected function handle_warning($job, $result)
 	{
-		$task->handle_warning($result);
+		$job->handle_warning($result);
 	}
 
-	protected function handle_fail($task)
+	protected function handle_fail($job)
 	{
-		$task->handle_fail();
+		$job->handle_fail();
 	}
 
-	protected function handle_exception($task, $result)
+	protected function handle_exception($job, $result)
 	{
-		$task->handle_exception($result);
+		$job->handle_exception($result);
 	}
 
-	protected function handle_status($task, $result)
+	protected function handle_status($job, $result)
 	{
 		list($numerator, $denominator) = $result;
-		$task->handle_status($numerator, $denominator);
+		$job->handle_status($numerator, $denominator);
 	}
 
-	protected function handle_data($task, $result)
+	protected function handle_data($job, $result)
 	{
-		$task->handle_data($result);
+		$job->handle_data($result);
 	}
 }

@@ -23,7 +23,7 @@ class Gearman_Client_Pecl extends Gearman_Client {
 		}
 	}
 
-	public function do_task(Gearman_Task $task, $priority = Gearman::PRIORITY_NORMAL)
+	public function run_job(Gearman_Job $job, $priority = Gearman::PRIORITY_NORMAL)
 	{
 		do
 		{
@@ -32,13 +32,13 @@ class Gearman_Client_Pecl extends Gearman_Client {
 			switch ($priority)
 			{
 				case Gearman::PRIORITY_LOW:
-					$result = $this->client->doLow($task->function_name(), $task->workload());
+					$result = $this->client->doLow($job->function_name(), $job->workload());
 					break;
 				case Gearman::PRIORITY_NORMAL:
-					$result = $this->client->do($task->function_name(), $task->workload());
+					$result = $this->client->do($job->function_name(), $job->workload());
 					break;
 				case Gearman::PRIORITY_HIGH:
-					$result = $this->client->doHigh($task->function_name(), $task->workload());
+					$result = $this->client->doHigh($job->function_name(), $job->workload());
 					break;
 				default:
 					throw new Gearman_Client_Exception('Invalid priority specified');
@@ -47,22 +47,22 @@ class Gearman_Client_Pecl extends Gearman_Client {
 			switch ($this->client->returnCode())
 			{
 				case GEARMAN_SUCCESS:
-					$this->handle_success($task, $result);
+					$this->handle_success($job, $result);
 					break;
 				case GEARMAN_WORK_WARNING:
-					$this->handle_warning($task, $result);
+					$this->handle_warning($job, $result);
 					break;
 				case GEARMAN_WORK_FAIL:
-					$this->handle_fail($task, $result);
+					$this->handle_fail($job, $result);
 					break;
 				case GEARMAN_WORK_EXCEPTION:
-					$this->handle_exception($task, $result);
+					$this->handle_exception($job, $result);
 					break;
 				case GEARMAN_WORK_STATUS:
-					$this->handle_status($task, $this->client->doStatus());
+					$this->handle_status($job, $this->client->doStatus());
 				  break;
 				case GEARMAN_WORK_DATA:
-					$this->handle_data($task, $result);
+					$this->handle_data($job, $result);
 				  break;
 			}
 		}
@@ -72,44 +72,39 @@ class Gearman_Client_Pecl extends Gearman_Client {
 		return $result;
 	}
 
-	public function do_task_background(Gearman_Task $task, $priority = Gearman::PRIORITY_NORMAL)
-	{
-		do
-		{
-			$job_handle = NULL;
-
-			switch ($priority)
-			{
-				case Gearman::PRIORITY_LOW:
-					$job_handle = $this->client->doLowBackground($task->function_name(), $task->workload());
-					break;
-				case Gearman::PRIORITY_NORMAL:
-					$job_handle = $this->client->doBackground($task->function_name(), $task->workload());
-					break;
-				case Gearman::PRIORITY_HIGH:
-					$job_handle = $this->client->doHighBackground($task->function_name(), $task->workload());
-					break;
-				default:
-					throw new Gearman_Client_Exception('Invalid priority specified');
-			}
-
-			if ($this->client->returnCode() != GEARMAN_SUCCESS)
-			{
-				throw new Gearman_Client_Exception();
-			}
-
-			return $job_handle;
-		}
-		while($this->client->returnCode() != GEARMAN_SUCCESS
-			AND $this->client->returnCode() != GEARMAN_WORK_FAIL);
-
-		return $result;
-	}
-
-	public function do_taskset(Gearman_TaskSet $task)
-	{
-		throw new Gearman_Client_Exception('TaskSet\'s are currently un-supported');
-	}
+//	public function do_task_background(Gearman_Task $task, $priority = Gearman::PRIORITY_NORMAL)
+//	{
+//		do
+//		{
+//			$job_handle = NULL;
+//
+//			switch ($priority)
+//			{
+//				case Gearman::PRIORITY_LOW:
+//					$job_handle = $this->client->doLowBackground($task->function_name(), $task->workload());
+//					break;
+//				case Gearman::PRIORITY_NORMAL:
+//					$job_handle = $this->client->doBackground($task->function_name(), $task->workload());
+//					break;
+//				case Gearman::PRIORITY_HIGH:
+//					$job_handle = $this->client->doHighBackground($task->function_name(), $task->workload());
+//					break;
+//				default:
+//					throw new Gearman_Client_Exception('Invalid priority specified');
+//			}
+//
+//			if ($this->client->returnCode() != GEARMAN_SUCCESS)
+//			{
+//				throw new Gearman_Client_Exception();
+//			}
+//
+//			return $job_handle;
+//		}
+//		while($this->client->returnCode() != GEARMAN_SUCCESS
+//			AND $this->client->returnCode() != GEARMAN_WORK_FAIL);
+//
+//		return $result;
+//	}
 
 	public function check_status($job_handle)
 	{
