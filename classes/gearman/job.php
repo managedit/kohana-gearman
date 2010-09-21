@@ -21,6 +21,8 @@ abstract class Gearman_Job {
 	protected $max_retries = 0;
 	protected $retry_count = 0;
 
+	public $handle = NULL;
+
 	protected $log;
 
 	public static function factory($class)
