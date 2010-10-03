@@ -3,6 +3,8 @@
 [!!] This assumes the worker and task from below
 
 	class Controller_Demo extends Controller {
+
+		// This method runs a single job in the foreground.
 		public function action_reverse($workload = 'Testing')
 		{
 			ob_end_flush();
@@ -14,6 +16,36 @@
 			try
 			{
 				$result = $client->run_job($job);
+				var_dump($result);
+			}
+			catch (Exception $e)
+			{
+				echo 'Caught Exception: '.$e->getMessage()."\n";
+			}
+		}
+
+		// This method runs a multiple jobs in parallel, in the foreground.
+		public function action_reverseset($workloads = 'Testing 1,Testing 2,Testing 3,Testing 4')
+		{
+			ob_end_flush();
+
+			$workloads = explode(',', $workloads);
+
+			$client = Gearman_Client::instance('default');
+
+			$jobs = array();
+
+			foreach ($workloads as $workload)
+			{
+				$job = Gearman_Job::factory('Reverse');
+				$job->workload($workload);
+
+				$jobs[] = $job;
+			}
+
+			try
+			{
+				$result = $client->run_jobs($jobs);
 				var_dump($result);
 			}
 			catch (Exception $e)
