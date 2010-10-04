@@ -51,10 +51,17 @@ abstract class Gearman_Client {
 
 	abstract public function run_job_bg(Gearman_Job $job, $priority = Gearman::PRIORITY_NORMAL);
 
+	abstract public function add_job(Gearman_Job $job, $priority = Gearman::PRIORITY_NORMAL);
+
+	abstract public function add_job_bg(Gearman_Job $job, $priority = Gearman::PRIORITY_NORMAL);
+
+	abstract public function run_jobs();
+	
 	protected function handle_success($job, $result)
 	{
 		$job->handle_success($result);
 	}
+
 
 	protected function handle_warning($job, $result)
 	{

@@ -25,6 +25,7 @@
 		}
 
 		// This method runs a multiple jobs in parallel, in the foreground.
+		// Dont forget to run multiple worker instances to see how this really works!
 		public function action_reverseset($workloads = 'Testing 1,Testing 2,Testing 3,Testing 4')
 		{
 			ob_end_flush();
@@ -40,13 +41,24 @@
 				$job = Gearman_Job::factory('Reverse');
 				$job->workload($workload);
 
-				$jobs[] = $job;
+				// $unique = A number that can be used later to pick out this jobs result...
+				$unique = $client->add_job($job);
 			}
 
 			try
 			{
-				$result = $client->run_jobs($jobs);
-				var_dump($result);
+				/*
+				 * The array keys of $results will match up with $unique from above.
+				 */
+				$results = $client->run_jobs();
+
+				/*
+				 * Note: If the Job_Reverse::on_* handlers throw an exception, You'll find
+				 * a Gearman_Client_Exception in $results[$unique]. The excpetions
+				 * thrown by the on_* handlers can be found in the
+				 * $results[$unique]->exceptions array
+				 */
+				var_dump($results);
 			}
 			catch (Exception $e)
 			{
