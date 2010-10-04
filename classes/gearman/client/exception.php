@@ -8,4 +8,6 @@
  * @license    http://kohanaframework.org/license
  */
 
-class Gearman_Client_Exception extends Gearman_Exception {}
+class Gearman_Client_Exception extends Gearman_Exception {
+	public $exceptions = array();
+}
