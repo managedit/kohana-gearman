@@ -8,5 +8,5 @@
 	<property name="app.description" value="Kohana Gearman Module" /> <!-- Module Description -->
 	<property name="kohana.module.name" value="gearman" /> <!-- Module Name -->
 	<property name="kohana.version" value="3.0" />  <!-- Compatible  Kohana Version (eg 3.0 or 3.1, not 3.0.9 etc) -->
-	<property name="app.version" value="0.2.0" /> <!-- Module Version Number -->
+	<property name="app.version" value="0.2.1" /> <!-- Module Version Number -->
 </project>
