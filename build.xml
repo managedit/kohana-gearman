@@ -2,11 +2,12 @@
 <project name="kohana-gearman" basedir="." default="main">
 	<property file="build.properties" />
 
-	<import file="build/common-kohana-module.xml" />
-	<import file="build/common.xml" />
+	<import file="build/common/kohana-module.xml" />
+	<import file="build/common/build.xml" />
 
-	<property name="app.description" value="Kohana Gearman Module" /> <!-- Module Description -->
-	<property name="kohana.module.name" value="gearman" /> <!-- Module Name -->
-	<property name="kohana.version" value="3.0" />  <!-- Compatible  Kohana Version (eg 3.0 or 3.1, not 3.0.9 etc) -->
-	<property name="app.version" value="0.2.1" /> <!-- Module Version Number -->
+	<target name="package" depends="build">
+		<!-- Choose which packagers you want -->
+		<phingcall target="package-zip" />
+		<phingcall target="package-deb" />
+	</target>
 </project>
