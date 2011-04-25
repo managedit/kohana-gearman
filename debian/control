@@ -1,0 +1,12 @@
+Source: kohana3.1-mod-gearman
+Section: web
+Priority: optional
+Maintainer: Kiall Mac Innes <kiall.macinnes@kohanaphp.com>
+Homepage: http://www.kohanaframework.org/
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.9.1
+
+Package: kohana3.1-mod-gearman
+Architecture: all
+Description: Kohana Gearman Module
+Depends: kohana3.1-core (>= 3.1.0)
