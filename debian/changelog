@@ -1,3 +1,9 @@
+kohana3.1-mod-gearman (0.2.1-2) kohana; urgency=low
+
+ * Add libgearman as a dependancy
+
+ -- Kiall Mac Innes <kiall@managedit.ie>  Mon, 25 Apr 2011 23:42:20 +0100
+
 kohana3.1-mod-gearman (0.2.1-1) kohana; urgency=low
 
   * v0.2.1 packaging

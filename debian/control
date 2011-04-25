@@ -9,4 +9,5 @@ Standards-Version: 3.9.1
 Package: kohana3.1-mod-gearman
 Architecture: all
 Description: Kohana Gearman Module
-Depends: kohana3.1-core (>= 3.1.0)
+Depends: kohana3.1-core (>= 3.1.0), libgearman4 (>= 0.14)
+Suggests: php5-gearman
