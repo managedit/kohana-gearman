@@ -1,3 +1,9 @@
+kohana3.1-mod-gearman (0.2.1-1) kohana; urgency=low
+
+  * v0.2.1 packaging
+
+ -- Kiall Mac Innes <kiall@managedit.ie>  Mon, 25 Apr 2011 23:28:16 +0100
+
 kohana3.1-mod-gearman (0.0.1-1) kohana; urgency=low
 
   * Initial Packaging
