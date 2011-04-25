@@ -1,1 +1,4 @@
-* /usr/share/kohana3.1/modules/gearman
+classes/* /usr/share/kohana3.1/modules/gearman/classes/
+config/* /usr/share/kohana3.1/modules/gearman/config/
+guide/* /usr/share/kohana3.1/modules/gearman/guide/
+tests/* /usr/share/kohana3.1/modules/gearman/tests/
